@@ -1,20 +1,25 @@
-require('dotenv').config()
-const Product= require("./models/Product")
-const connectDB = require("./utils/connectDB")
-const productData = require('./data.json')
+import { readFile } from 'fs/promises'
 
-connectDB()
+import dotenv from 'dotenv'
+dotenv.config()
 
-const importData = async () => {
-    try {
-        await Product.deleteMany({})
+import connectDB from './utils/db.js'
+import Product from './models/Product.js'
 
-        await Product.insertMany(productData)
-        console.log("success with data import");
-        process.exit()
-    } catch (error) {
-        console.log("Error with data import");
-        process.exit(1)
-    }
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI)
+    await Product.deleteMany()
+    const jsonProducts = JSON.parse(
+      await readFile(new URL('./data.json', import.meta.url))
+    )
+    await Product.create(jsonProducts)
+    console.log('Success!!!')
+    process.exit(0)
+  } catch (error) {
+    console.log(error)
+    process.exit(1)
+  }
 }
-importData()
+
+start()
