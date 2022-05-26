@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const ProductSchema = new mongoose.Schema(
   {
     albumId: {
-      type: String,
+      type: Number,
     },
     title: {
       type: String,
