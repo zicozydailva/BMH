@@ -4,7 +4,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 dotenv.config()
 
-import productsRoutes from "./controllers/product.controller.js"
+import productsRoutes from "./routes/products.js"
 
 const port = process.env.PORT
 
